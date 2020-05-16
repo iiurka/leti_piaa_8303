@@ -1,0 +1,6 @@
+ABCBABCBA
+4
+ABC
+BCB
+CBA
+BAB    

@@ -1,0 +1,3 @@
+ABABA
+1
+ABA
