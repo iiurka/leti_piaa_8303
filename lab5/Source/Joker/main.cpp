@@ -181,6 +181,12 @@ public:
 #endif
     }
 
+    ~TreeNode()
+    {
+        for (auto child : children)
+            delete child.second;
+    }
+
 private:
 #ifdef DEBUG
     string dbgStr = "";
