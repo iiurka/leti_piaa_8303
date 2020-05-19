@@ -15,15 +15,14 @@ public:
     explicit TreeNode(char val) : value(val) {}
 
 #ifdef DEBUG
-    void printTrie()
-    {
+
+    void printTrie() {
         cout << "Current state of trie:" << endl;
 
-        queue <TreeNode*> queue;
+        queue<TreeNode *> queue;
         queue.push(this);
 
-        while (!queue.empty())
-        {
+        while (!queue.empty()) {
             auto curr = queue.front();
             if (!curr->value)
                 cout << "Root:" << endl;
@@ -34,7 +33,7 @@ public:
             if (curr->parent && curr->parent->value)
                 cout << "\tParent: " << curr->parent->dbgStr << endl;
             else if (curr->parent)
-                cout << "\tParent: Root"<< endl;
+                cout << "\tParent: Root" << endl;
 
             if (!curr->children.empty())
                 cout << "\tChildren: ";
@@ -48,18 +47,16 @@ public:
         cout << endl;
 
     }
+
 #endif
 
-    void insert(const string &str)
-    {
+    void insert(const string &str) {
         auto curr = this;
         static size_t countPatterns = 0;
         //пробегаемся по строке
-        for (char c : str)
-        {
+        for (char c : str) {
             //если из текущей вершины по текущему символу не было создано перехода
-            if (curr->children.find(c) == curr->children.end())
-            {
+            if (curr->children.find(c) == curr->children.end()) {
                 //создаём переход по символу
                 curr->children[c] = new TreeNode(c);
                 curr->children[c]->parent = curr;
@@ -78,10 +75,9 @@ public:
         curr->numOfPattern = ++countPatterns;
     }
 
-    vector <size_t> find(const char c)
-    {
+    vector<size_t> find(const char c) {
         // статическая переменная для хранения вершины, с которой необходимо начать следующий вызов
-        static const TreeNode* curr = this;
+        static const TreeNode *curr = this;
 #ifdef DEBUG
         cout << "Find '" << c << "' from: " << (curr->dbgStr.empty() ? "Root" : curr->dbgStr) << endl;
 #endif
@@ -116,7 +112,8 @@ public:
                 }
 #ifdef DEBUG
             if (curr->suffixLink)
-                cout << "Go to suffix link: " << (curr->suffixLink->dbgStr.empty() ? "Root" : curr->suffixLink->dbgStr) << endl;
+                cout << "Go to suffix link: " << (curr->suffixLink->dbgStr.empty() ? "Root" : curr->suffixLink->dbgStr)
+                     << endl;
 #endif
         }
 #ifdef DEBUG
@@ -126,28 +123,25 @@ public:
         return {};
     }
 
-    void makeAutomaton()
-    {
+    void makeAutomaton() {
 #ifdef DEBUG
         cout << "Automaton building: " << endl;
 #endif
         // очередь для обхода в ширину
-        queue <TreeNode*> queue;
+        queue<TreeNode *> queue;
         // закидываем потомков корня
         for (auto child : children)
             queue.push(child.second);
 
-        while (!queue.empty())
-        {
+        while (!queue.empty()) {
             // обрабатываем верхушку очереди
             auto curr = queue.front();
 #ifdef DEBUG
             cout << curr->dbgStr << ':' << endl;
             if (curr->parent && curr->parent->value) {
                 cout << "\tParent: " << curr->parent->dbgStr << endl;
-            }
-            else if (curr->parent) {
-                cout << "\tParent: Root"<< endl;
+            } else if (curr->parent) {
+                cout << "\tParent: Root" << endl;
             }
 
             if (!curr->children.empty()) {
@@ -193,6 +187,11 @@ public:
 #endif
     }
 
+    ~TreeNode()
+    {
+        for (auto child : children)
+            delete child.second;
+    }
 
 private:
 #ifdef DEBUG
